@@ -1183,35 +1183,38 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
     <p class="mt-10 text-center text-xs text-mist/30">© SLAYIT · прокачай инглиш и блистай</p>
   </footer>
-
-
-<div style="height: 55px !important;"></div></body></html>  <!-- Блок для новых слов из таблицы -->
-<section id="words-gallery" class="max-w-5xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <!-- Сюда скрипт будет добавлять карточки -->
-</section>
-
-<script>
-  // 1. Вставьте сюда ссылку на вашу опубликованную Google Таблицу (CSV)
-  const googleSheetCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSm3eDOjd-IyogditPrwhmsOSS15qW4OWr4IN0P_WFTJVo3mDdv99XqmAs6szeWobUBWss-8P9t1FFF/pub?output=csv';
+  <script>
+  // 
+   onst googleSheetCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSm3eDOjd-IyogditPrwhmsOSS15qW4OWr4IN0P_WFTJVo3mDdv99XqmAs6szeWobUBWss-8P9t1FFF/pub?output=csv';
 
   fetch(googleSheetCsvUrl)
-    .then(response => response.text())
+    .then(response => {
+      if (!response.ok) throw new Error('Ошибка сети');
+      return response.text();
+    })
     .then(csvText => {
       // Разделяем таблицу на строки
       const rows = csvText.split(/\r?\n/).filter(row => row.trim() !== '');
       const container = document.getElementById('words-gallery');
       
+      // Если контейнер не найден, прекращаем выполнение
+      if (!container) {
+        console.error('Ошибка: Не найден блок с id="words-gallery". Проверьте, вставлен ли он выше.');
+        return;
+      }
+      
       // Пропускаем первую строку (заголовки)
       rows.slice(1).forEach(row => {
-        // Простой парсер CSV (понимает текст в кавычках, чтобы запятые в примерах не ломали код)
+        // Простой парсер CSV
         const matches = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
         if (!matches || matches.length < 3) return;
 
+        // Убираем лишние кавычки и пробелы
         let word = matches[0].replace(/^"|"$/g, '').trim();
         let meaning = matches[1].replace(/^"|"$/g, '').trim();
         let example = matches[2].replace(/^"|"$/g, '').trim();
 
-        // Создаем карточку, используя ВАШИ классы из style.css и index.html
+        // Создаем карточку с ВАШИМИ классами
         const card = document.createElement('div');
         card.className = 'fade-up visible rounded-3xl border border-lilac/25 bg-white/[0.03] p-8 backdrop-blur-sm flex flex-col';
         
@@ -1226,3 +1229,5 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(err => console.error('Ошибка загрузки слов из таблицы:', err));
 </script>
+
+
