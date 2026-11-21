@@ -1,0 +1,85 @@
+
+  @keyframes drift-a {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, -30px) scale(1.15); }
+  }
+  @keyframes drift-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, 25px) scale(0.9); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  body {
+    background: #191527;
+    font-family: "Manrope", sans-serif;
+    color: #F5F3FA;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: #8F7BE8;
+    color: #191527;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(110px);
+    pointer-events: none;
+  }
+  .orb-a {
+    width: 480px; height: 480px;
+    background: rgba(143, 123, 232, 0.28);
+    animation: drift-a 14s ease-in-out infinite;
+  }
+  .orb-b {
+    width: 380px; height: 380px;
+    background: rgba(255, 119, 200, 0.20);
+    animation: drift-b 18s ease-in-out infinite;
+  }
+
+  .flip-scene { perspective: 1200px; }
+  .flip-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .flip-scene.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(143, 123, 232, 0.25);
+    background: rgba(245, 243, 250, 0.03);
+  }
+  .flip-back { transform: rotateY(180deg); border-color: rgba(255, 119, 200, 0.35); }
+
+  .fade-up { opacity: 0; }
+  .fade-up.visible { animation: fade-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+  .word-swap { animation: pop-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+  .glow-text {
+    text-shadow: 0 0 32px rgba(143, 123, 232, 0.45);
+  }
+  .grad-text {
+    background: linear-gradient(100deg, #F5F3FA 10%, #8F7BE8 45%, #FF77C8 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hr-glow {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(143, 123, 232, 0.5), rgba(255, 119, 200, 0.5), transparent);
+    border: none;
+  }
